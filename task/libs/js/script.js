@@ -1,7 +1,7 @@
 $('#btn1').click(function() {
 
     $.ajax({
-        url: "getCountryInfo.php",
+        url: "libs/php/getCountryInfo.php",
         type: 'POST',
         dataType: 'json',
         data: {
