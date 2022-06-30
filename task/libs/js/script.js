@@ -41,7 +41,8 @@ $('#btn2').click(function() {
         type: 'POST',
         dataType: 'json',
         data: {
-            country: $('#selCountry').val()
+            country: $('#selCountry').val(),
+            postalCode: $('#selPostalCode').val()
         },
         success: function(result) {
 
