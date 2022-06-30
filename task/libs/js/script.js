@@ -8,7 +8,7 @@ $('#btn1').click(function() {
         type: 'POST',
         dataType: 'json',
         data: {
-            country: $('#selCountry').val(),
+            country1: $('#selCountry1').val(),
             lang: $('#selLanguage').val()
         },
         success: function(result) {
@@ -41,7 +41,7 @@ $('#btn2').click(function() {
         type: 'POST',
         dataType: 'json',
         data: {
-            country: $('#selCountry').val(),
+            country2: $('#selCountry2').val(),
             postalCode: $('#selPostalCode').val()
         },
         success: function(result) {
@@ -50,8 +50,8 @@ $('#btn2').click(function() {
 
             if (result.status.name == "ok") {
 
-                $('#txtPostalCode').html(result['data'][0]['postalcode']);
-                $('#txtplaceName').html(result['data'][0]['placeName']);
+                $('#txtPostalCode').html(result['data'][0]['postalCode']);
+                $('#txtPlaceName').html(result['data'][0]['placeName']);
                 $('#txtAdminCode1').html(result['data'][0]['adminCode1']);
                 $('#txtAdminName2').html(result['data'][0]['adminName2']);
                 $('#txtAdminCode2').html(result['data'][0]['adminCode2']);
