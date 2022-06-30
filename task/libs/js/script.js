@@ -8,7 +8,8 @@ $('#btn1').click(function() {
         type: 'POST',
         dataType: 'json',
         data: {
-            country: $('#selCountry').val()
+            country: $('#selCountry').val(),
+            lang: $('#selLanguage').val()
         },
         success: function(result) {
 
