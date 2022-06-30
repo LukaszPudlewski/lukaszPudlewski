@@ -17,11 +17,11 @@ $('#btn1').click(function() {
 
             if (result.status.name == "ok") {
 
-                $('#txtContinent').html(result['data'][0]['continent']);
-                $('#txtCapital').html(result['data'][0]['capital']);
-                $('#txtLanguages').html(result['data'][0]['languages']);
-                $('#txtPopulation').html(result['data'][0]['population']);
-                $('#txtArea').html(result['data'][0]['areaInSqKm']);
+                $('#p1').html(result['data'][0]['continent']);
+                $('#p2').html(result['data'][0]['capital']);
+                $('#p3').html(result['data'][0]['languages']);
+                $('#p4').html(result['data'][0]['population']);
+                $('#p5').html(result['data'][0]['areaInSqKm']);
 
             }
         
@@ -50,12 +50,43 @@ $('#btn2').click(function() {
 
             if (result.status.name == "ok") {
 
-                $('#txtPostalCode').html(result['data'][0]['postalCode']);
-                $('#txtPlaceName').html(result['data'][0]['placeName']);
-                $('#txtAdminCode1').html(result['data'][0]['adminCode1']);
-                $('#txtAdminName2').html(result['data'][0]['adminName2']);
-                $('#txtAdminCode2').html(result['data'][0]['adminCode2']);
-                $('#txtAdminName2').html(result['data'][0]['adminName2']);
+                $('#p1').html(result['data'][0]['postalCode']);
+                $('#p2').html(result['data'][0]['placeName']);
+                $('#p3').html(result['data'][0]['adminCode1']);
+                $('#p4').html(result['data'][0]['adminName1']);
+                $('#p5').html(result['data'][0]['adminCode2']);
+
+            }
+        
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            // your error code
+        }
+    }); 
+
+});
+
+$('#btn3').click(function() {
+
+    $.ajax({
+        url: "libs/php/timezones.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            lat: $('#selLat').val(),
+            lng: $('#selLng').val()
+        },
+        success: function(result) {
+
+            console.log(JSON.stringify(result));
+
+            if (result.status.name == "ok") {
+
+                $('#p1').html(result['data'][0]['sunrise']);
+                $('#p2').html(result['data'][0]['sunset']);
+                $('#p3').html(result['data'][0]['timezoneId']);
+                $('#p4').html(result['data'][0]['countryName']);
+                $('#p5').html(result['data'][0]['time']);
 
             }
         
