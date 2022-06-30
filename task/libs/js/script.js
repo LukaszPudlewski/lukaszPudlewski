@@ -51,7 +51,7 @@ $('#btn2').click(function() {
             if (result.status.name == "ok") {
 
                 $('#txtPostalCode').html(result['data'][0]['postalcode']);
-                $('#txtName').html(result['data'][0]['name']);
+                $('#txtplaceName').html(result['data'][0]['placeName']);
                 $('#txtAdminCode1').html(result['data'][0]['adminCode1']);
                 $('#txtAdminName2').html(result['data'][0]['adminName2']);
                 $('#txtAdminCode2').html(result['data'][0]['adminCode2']);
