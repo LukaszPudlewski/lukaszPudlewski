@@ -82,11 +82,11 @@ $('#btn3').click(function() {
 
             if (result.status.name == "ok") {
 
-                $('#p1').html(result['data'][0]['sunrise']);
-                $('#p2').html(result['data'][0]['sunset']);
-                $('#p3').html(result['data'][0]['timezoneId']);
-                $('#p4').html(result['data'][0]['countryName']);
-                $('#p5').html(result['data'][0]['time']);
+                $('#p1').html(result['data']['sunrise']);
+                $('#p2').html(result['data']['sunset']);
+                $('#p3').html(result['data']['timezoneId']);
+                $('#p4').html(result['data']['countryName']);
+                $('#p5').html(result['data']['time']);
 
             }
         
