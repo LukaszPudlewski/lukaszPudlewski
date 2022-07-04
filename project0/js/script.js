@@ -24,7 +24,6 @@ function showPosition(position) {
 let countryBorder = countryInput.value;
 console.log(countryBorder);
 
-
 //api call, button, inner.Html -- combine few api, use data from 1 to 2
 /*
 let searchBtn = document.getElementById("search-btn");
@@ -36,13 +35,10 @@ searchBtn.addEventListener("click", () => {
   let restCountries = 'libs/php/restCountries.php'
   console.log(finalURL);
   console.log(wikiLinks);
-
     fetch(finalURL)
     .then((response) => response.json())
     .then((data) => {
-
-
-      info.innerHTML = `
+      result.innerHTML = `
         <img src="${data[0].flags.svg}" class="flag-img">
         <h2>${data[0].name.common}</h2>
         <div class="wrapper">
@@ -80,7 +76,6 @@ searchBtn.addEventListener("click", () => {
                   .join(", ")}</span>
             </div>
         </div>
-
       `;
     })
     .catch(() => {
@@ -94,7 +89,9 @@ searchBtn.addEventListener("click", () => {
   });
 */
 
-// doesnt work / where should I put .catch
+
+/*
+// where should I put .catch
 let searchBtn = document.getElementById("search-btn");
 let countryInp = document.getElementById("country-inp");
   $('#search-btn').click(function() {
@@ -160,3 +157,58 @@ let countryInp = document.getElementById("country-inp");
     })
 
 });
+*/
+
+$('#search-btn').click( async function()  {
+  let resultCountry;
+  let resultWiki;
+  let resultWeather;
+
+  try {
+      result = await $.ajax({
+      url: "php/restCountries.php",
+      type: 'POST',
+      dataType: 'json',
+      data: {
+          countryName: $('#countryInput').val()
+      },
+  });
+
+      return resultCountry;
+  } catch (error) {
+      console.log(error);
+  }
+
+  try {
+    result2 = await $.ajax({
+    url: "php/wikiLinks.php",
+    type: 'POST',
+    dataType: 'json',
+    data: {
+        countryName: $('#countryInput').val()
+    },
+});
+
+    return resultWiki;
+} catch (error) {
+    console.log(error);
+}
+
+try {
+  result3 = await $.ajax({
+  url: "php/openWeather.php",
+  type: 'POST',
+  dataType: 'json',
+  data: {
+      lat: result.data[0].lat,
+      lon: result.data[0].lon,
+      apiKey: process.env.API_KEY
+  },
+});
+
+  return resultWeather;
+} catch (error) {
+  console.log(error);
+}
+
+})
