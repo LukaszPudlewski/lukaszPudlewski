@@ -19,6 +19,10 @@ function showPosition(position) {
   console.log(position.coords.latitude + " " + position.coords.longitude);
 }
 
+// marker
+
+let countryBorder = countryInput.value;
+console.log(countryBorder);
 
 
 //api call, button, inner.Html -- combine few api, use data from 1 to 2
