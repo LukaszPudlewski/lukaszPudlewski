@@ -42,7 +42,7 @@ searchBtn.addEventListener("click", () => {
     .then((data) => {
 
 
-      result.innerHTML = `
+      info.innerHTML = `
         <img src="${data[0].flags.svg}" class="flag-img">
         <h2>${data[0].name.common}</h2>
         <div class="wrapper">
@@ -100,7 +100,7 @@ let countryInp = document.getElementById("country-inp");
   $('#search-btn').click(function() {
 
     $.ajax({
-        url: "libs/php/restCountries.php",
+        url: "php/restCountries.php",
         type: 'POST',
         dataType: 'json',
         data: {
@@ -112,39 +112,39 @@ let countryInp = document.getElementById("country-inp");
 
             if (result.status.name == "ok") {
 
-              result.innerHTML = `
-              <img src="${data[0].flags.svg}" class="flag-img">
-              <h2>${data[0].name.common}</h2>
+              info.innerHTML = `
+              <img src="${result.data[0].flags.svg}" class="flag-img">
+              <h2>${result.data[0].name.common}</h2>
               <div class="wrapper">
                   <div class="data-wrapper">
                       <h4>Capital:</h4>
-                      <span>${data[0].capital[0]}</span>
+                      <span>${result.data[0].capital[0]}</span>
                   </div>
               </div>
               <div class="wrapper">
                   <div class="data-wrapper">
                       <h4>Continent:</h4>
-                      <span>${data[0].continents[0]}</span>
+                      <span>${result.data[0].continents[0]}</span>
                   </div>
               </div>
                <div class="wrapper">
                   <div class="data-wrapper">
                       <h4>Population:</h4>
-                      <span>${data[0].population}</span>
+                      <span>${result.data[0].population}</span>
                   </div>
               </div>
               <div class="wrapper">
                   <div class="data-wrapper">
                       <h4>Currency:</h4>
                       <span>${
-                        data[0].currencies[Object.keys(data[0].currencies)].name
-                      } - ${Object.keys(data[0].currencies)[0]}</span>
+                        data[0].currencies[Object.keys(result.data[0].currencies)].name
+                      } - ${Object.keys(result.data[0].currencies)[0]}</span>
                   </div>
               </div>
                <div class="wrapper">
                   <div class="data-wrapper">
                       <h4>Common Languages:</h4>
-                      <span>${Object.values(data[0].languages)
+                      <span>${Object.values(result.data[0].languages)
                         .toString()
                         .split(",")
                         .join(", ")}</span>
