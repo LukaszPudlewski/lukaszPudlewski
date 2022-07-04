@@ -137,7 +137,7 @@ let countryInp = document.getElementById("country-inp");
                   <div class="data-wrapper">
                       <h4>Currency:</h4>
                       <span>${
-                        data[0].currencies[Object.keys(result.data[0].currencies)].name
+                        result.data[0].currencies[Object.keys(result.data[0].currencies)].name
                       } - ${Object.keys(result.data[0].currencies)[0]}</span>
                   </div>
               </div>
