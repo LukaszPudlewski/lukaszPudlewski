@@ -43,8 +43,12 @@ $('#search-btn').click( async function()  {
       },
   });
 
-  } catch (error) {
-      console.log(error);
+  } catch(error) {
+    if (countryName.length == 0) {
+      result.innerHTML = `<h3>The input field cannot be empty</h3>`;
+    } else {
+      result.innerHTML = `<h3>Please enter a valid country name.</h3>`;
+    }
   }
 
   try {
