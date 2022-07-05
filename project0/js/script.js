@@ -200,8 +200,8 @@ try {
   type: 'POST',
   dataType: 'json',
   data: {
-      lat: result.data[0].lat,
-      lon: result.data[0].lon,
+      lat: resultCountry.data[0].lat,
+      lon: resultCountry.data[0].lon,
       apiKey: process.env.API_KEY
   },
 });
