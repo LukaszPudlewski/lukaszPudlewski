@@ -117,7 +117,7 @@ try {
     <div class="wrapper">
       <div class="data-wrapper">
           <h4>Weather:</h4>
-          <span>${resultWeather.data[0].main[0].temp}</span>
+          <span>${resultWeather.data[0].main.temp}</span>
       </div>
     </div>
     <div class="wrapper">
