@@ -76,7 +76,6 @@ try {
   console.log(error);
 }
 
-  await ((resultCountry, resultWiki, resultWeather) => {
   info.innerHTML = `
     <img src="${resultCountry.data[0].flags.svg}" class="flag-img">
     <h2>${resultCountry.data[0].name.common}</h2>
@@ -123,6 +122,5 @@ try {
     </div>
 
   `;
-})
 
 })
