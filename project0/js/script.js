@@ -1,6 +1,16 @@
-const countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua & Deps","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Central African Rep","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","East Timor","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Ivory Coast","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea North","Korea South","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","St Kitts & Nevis","St Lucia","Saint Vincent & the Grenadines","Samoa","San Marino","Sao Tome & Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad & Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
 //require('dotenv').config();
+
+const countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua & Deps","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Central African Rep","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","East Timor","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Ivory Coast","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea North","Korea South","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","St Kitts & Nevis","St Lucia","Saint Vincent & the Grenadines","Samoa","San Marino","Sao Tome & Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad & Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
+
+const countriesLow = countries.map(element => {
+  return element.toLowerCase();
+});
+
+var latLngBounds;
+var borderLayer;
+var layerGroup;
+
 
 //map
 
@@ -12,36 +22,79 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 // geolocation 
-
+/*
 if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(showPosition);
+  navigator.geolocation.getCurrentPosition(function(position) {
+    let lng = position.coords.longitude;
+    let lat = position.coords.latitude;
+    map.setView([lat, lng], 5);
+    
+
+    $.ajax({
+        url: "php/countryCode.php",
+        type: 'POST',
+        dataType: 'json',
+        data: { 
+            lng: lng,
+            lat: lat
+        },
+        success: function(result) {
+            
+            $('#countryInput').val(result.data.countryName).change();
+        },
+
+    });       
+});
+
 } else {
-  document.getElementById("demo").innerHTML =
-  "Geolocation is not supported by this browser.";
+  console.log("Geolocation is not supported by this browser.");
 }
 
-function showPosition(position) {
-console.log(position.coords.latitude + ' ' + position.coords.longitude);
-};
-
-// marker
+*/
+// borders
 
 
+
+function applyCountryBorder(map, countryname) {
+  jQuery
+    .ajax({
+      type: "GET",
+      dataType: "json",
+      url:
+        "https://nominatim.openstreetmap.org/search?country=" +
+        countryname.trim() +
+        "&polygon_geojson=1&format=json"
+    })
+    .then(function (data) {
+      latLngBounds = data[0].boundingbox;
+      borderLayer = L.geoJSON(data[0].geojson, {
+        color: "blue",
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.0
+      }).addTo(map);
+      layerGroup.addLayer(borderLayer);
+      map.fitBounds([
+        [parseFloat(latLngBounds[0]), parseFloat(latLngBounds[2])],
+        [parseFloat(latLngBounds[1]), parseFloat(latLngBounds[3])]]);
+    })
+
+  };
 
 //button
 
 $('#search-btn').click( async function()  {
-  
+  let inputLow = $('#countryInput').val().toLowerCase();
   let resultCountry;
   let resultWiki;
   let resultWeather;
 
 
     if ($('#countryInput').val().length == 0) {
-      result.innerHTML = `<h3>The input field cannot be empty</h3>`;
+      info.innerHTML = `<h3>The input field cannot be empty</h3>`;
     } 
-    else if (!countries.includes($('#countryInput').val())) {
-      result.innerHTML = `<h3>Please enter a valid country name.</h3>`;
+    else if (!countriesLow.includes(inputLow)) {
+      info.innerHTML = `<h3>Please enter a valid country name.</h3>`;
     }
     else {
 
@@ -145,5 +198,7 @@ try {
   </div>
 
   `;
+
+  applyCountryBorder(map, inputLow);
             }
           })
