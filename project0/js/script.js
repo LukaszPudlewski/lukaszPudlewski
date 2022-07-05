@@ -165,7 +165,7 @@ $('#search-btn').click( async function()  {
   let resultWeather;
 
   try {
-      result = await $.ajax({
+      resultCountry = await $.ajax({
       url: "php/restCountries.php",
       type: 'POST',
       dataType: 'json',
@@ -180,7 +180,7 @@ $('#search-btn').click( async function()  {
   }
 
   try {
-    result2 = await $.ajax({
+    resultWiki = await $.ajax({
     url: "php/wikiLinks.php",
     type: 'POST',
     dataType: 'json',
@@ -195,7 +195,7 @@ $('#search-btn').click( async function()  {
 }
 
 try {
-  result3 = await $.ajax({
+  resultWeather = await $.ajax({
   url: "php/openWeather.php",
   type: 'POST',
   dataType: 'json',
