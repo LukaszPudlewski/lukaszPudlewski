@@ -124,9 +124,9 @@ try {
     <div class="wrapper">
     <div class="data-wrapper">
         <h4>Wiki Links:</h4>
-        <span>${resultWiki.data[0].geonames[0].wikipediaUrl}</span>
-        <span>${resultWiki.data[0].geonames[1].wikipediaUrl}</span>
-        <span>${resultWiki.data[0].geonames[2].wikipediaUrl}</span>
+        <span>${resultWiki.data.geonames[0].wikipediaUrl}</span>
+        <span>${resultWiki.data.geonames[1].wikipediaUrl}</span>
+        <span>${resultWiki.data.geonames[2].wikipediaUrl}</span>
     </div>
   </div>
 
