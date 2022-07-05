@@ -117,16 +117,18 @@ try {
     </div>
     <div class="wrapper">
       <div class="data-wrapper">
-          <h4>Weather:</h4>
+          <h4>Weather (°C):</h4>
           <span>${resultWeather.data.main.temp}</span>
       </div>
     </div>
     <div class="wrapper">
     <div class="data-wrapper">
         <h4>Wiki Links:</h4>
-        <span>${resultWiki.data.geonames[0].wikipediaUrl}</span>
-        <span>${resultWiki.data.geonames[1].wikipediaUrl}</span>
-        <span>${resultWiki.data.geonames[2].wikipediaUrl}</span>
+        <br>
+        <span><a href="${resultWiki.data.geonames[0].wikipediaUrl}">${resultWiki.data.geonames[0].wikipediaUrl}</a></span>
+        <span><a href="${resultWiki.data.geonames[1].wikipediaUrl}">${resultWiki.data.geonames[1].wikipediaUrl}</a></span>
+        <span><a href="${resultWiki.data.geonames[2].wikipediaUrl}">${resultWiki.data.geonames[2].wikipediaUrl}</a></span>
+
     </div>
   </div>
 
