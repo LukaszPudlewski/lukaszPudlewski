@@ -174,7 +174,6 @@ $('#search-btn').click( async function()  {
       },
   });
 
-      return resultCountry;
   } catch (error) {
       console.log(error);
   }
@@ -189,7 +188,6 @@ $('#search-btn').click( async function()  {
     },
 });
 
-    return resultWiki;
 } catch (error) {
     console.log(error);
 }
@@ -206,7 +204,6 @@ try {
   },
 });
 
-  return resultWeather;
 } catch (error) {
   console.log(error);
 }
