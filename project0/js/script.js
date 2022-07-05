@@ -76,45 +76,52 @@ try {
   console.log(error);
 }
 
-  await ((data) => {
-  result.innerHTML = `
-    <img src="${data[0].flags.svg}" class="flag-img">
-    <h2>${data[0].name.common}</h2>
+  await ((resultCountry, resultWiki, resultWeather) => {
+  info.innerHTML = `
+    <img src="${resultCountry.data[0].flags.svg}" class="flag-img">
+    <h2>${resultCountry.data[0].name.common}</h2>
     <div class="wrapper">
         <div class="data-wrapper">
             <h4>Capital:</h4>
-            <span>${data[0].capital[0]}</span>
+            <span>${resultCountry.data[0].capital[0]}</span>
         </div>
     </div>
     <div class="wrapper">
         <div class="data-wrapper">
             <h4>Continent:</h4>
-            <span>${data[0].continents[0]}</span>
+            <span>${resultCountry.data[0].continents[0]}</span>
         </div>
     </div>
      <div class="wrapper">
         <div class="data-wrapper">
             <h4>Population:</h4>
-            <span>${data[0].population}</span>
+            <span>${resultCountry.data[0].population}</span>
         </div>
     </div>
     <div class="wrapper">
         <div class="data-wrapper">
             <h4>Currency:</h4>
             <span>${
-              data[0].currencies[Object.keys(data[0].currencies)].name
-            } - ${Object.keys(data[0].currencies)[0]}</span>
+              resultCountry.data[0].currencies[Object.keys(resultCountry.data[0].currencies)].name
+            } - ${Object.keys(resultCountry.data[0].currencies)[0]}</span>
         </div>
     </div>
      <div class="wrapper">
         <div class="data-wrapper">
             <h4>Common Languages:</h4>
-            <span>${Object.values(data[0].languages)
+            <span>${Object.values(resultCountry.data[0].languages)
               .toString()
               .split(",")
               .join(", ")}</span>
         </div>
     </div>
+    <div class="wrapper">
+      <div class="data-wrapper">
+          <h4>Weather:</h4>
+          <span>${resultWeather.data[0].main[0].temp}</span>
+      </div>
+    </div>
+
   `;
 })
 
