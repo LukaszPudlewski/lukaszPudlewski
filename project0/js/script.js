@@ -13,13 +13,14 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(showPosition);
-} else { 
-  console.log('geolocation not supported by this browser');
+} else {
+  document.getElementById("demo").innerHTML =
+  "Geolocation is not supported by this browser.";
 }
 
 function showPosition(position) {
-  console.log(position.coords.latitude + " " + position.coords.longitude);
-}
+console.log(position.coords.latitude + ' ' + position.coords.longitude);
+};
 
 // marker
 
@@ -117,7 +118,7 @@ try {
     <div class="wrapper">
       <div class="data-wrapper">
           <h4>Weather:</h4>
-          <span>${resultWeather.data[0].main.temp}</span>
+          <span>${resultWeather.data.main.temp}</span>
       </div>
     </div>
     <div class="wrapper">
