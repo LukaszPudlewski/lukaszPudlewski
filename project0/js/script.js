@@ -27,9 +27,7 @@ layerGroup = new L.LayerGroup();
 
 // geolocation 
 
-let resultCountry;
-let resultWiki;
-let resultWeather;
+
 
  
 
@@ -58,7 +56,12 @@ if (navigator.geolocation) {
         }
     
          async function continueLogic(inputLow) {
-            resultCountry = await $.ajax({
+            
+          let resultCountry;
+          let resultWiki;
+          let resultWeather;
+            
+          resultCountry = await $.ajax({
 
                 url: "php/restCountries.php",
                 type: 'POST',
@@ -68,7 +71,7 @@ if (navigator.geolocation) {
                 },
             });
     
-             resultWiki = await $.ajax({
+          resultWiki = await $.ajax({
 
                 url: "php/wikiLinks.php",
                 type: 'POST',
@@ -90,7 +93,7 @@ if (navigator.geolocation) {
                     apiKey: /*process.env.API_KEY*/ '527a25be90efba24541cd7ca1ac87e7e'
                 },
             });
-        }
+        
 
         info.innerHTML = `
         <img src="${resultCountry.data[0].flags.svg}" class="flag-img">
@@ -149,7 +152,7 @@ if (navigator.geolocation) {
     
       `;
  
-
+    }
 
 
 
