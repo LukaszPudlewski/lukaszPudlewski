@@ -4,7 +4,7 @@
 const countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua & Deps","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Central African Rep","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","East Timor","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Ivory Coast","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea North","Korea South","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","St Kitts & Nevis","St Lucia","Saint Vincent & the Grenadines","Samoa","San Marino","Sao Tome & Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad & Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
 const countriesLow = countries.map(element => {
-  return element.toLowerCase();
+  return element.toLowerCase().split(' ').join('%20');
 });
 
 var latLngBounds;
@@ -26,7 +26,7 @@ layerGroup = new L.LayerGroup();
 
 
 // geolocation 
-/*
+
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(function(position) {
     let lng = position.coords.longitude;
@@ -44,17 +44,126 @@ if (navigator.geolocation) {
         },
         success: function(result) {
             
-            $('#countryInput').val(result.data.countryName).change();
-        },
+            async function xx()  {
 
-    });       
+let inputLow = result.data.countryName.toLowerCase().split(' ').join('%20');
+let resultCountry;
+let resultWiki;
+let resultWeather;
+
+try {
+  resultCountry = await $.ajax({
+  url: "php/restCountries.php",
+  type: 'POST',
+  dataType: 'json',
+  data: {
+      countryName: /*$('#countryInput').val()*/ inputLow
+  },
 });
 
-} else {
+} catch(error) {
+console.log(error);
+}
+
+try {
+resultWiki = await $.ajax({
+url: "php/wikiLinks.php",
+type: 'POST',
+dataType: 'json',
+data: {
+    countryName: /*$('#countryInput').val()*/ inputLow
+},
+});
+
+} catch (error) {
+console.log(error);
+}
+
+try {
+resultWeather = await $.ajax({
+url: "php/openWeather.php",
+type: 'POST',
+dataType: 'json',
+data: {
+  lat: resultCountry.data[0].latlng[0],
+  lon: resultCountry.data[0].latlng[1],
+  apiKey: /*process.env.API_KEY*/ '527a25be90efba24541cd7ca1ac87e7e'
+},
+});
+
+} catch (error) {
+console.log(error);
+}
+
+info.innerHTML = `
+<img src="${resultCountry.data[0].flags.svg}" class="flag-img">
+<h2>${resultCountry.data[0].name.common}</h2>
+<div class="wrapper">
+    <div class="data-wrapper">
+        <h4>Capital:</h4>
+        <span>${resultCountry.data[0].capital[0]}</span>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="data-wrapper">
+        <h4>Continent:</h4>
+        <span>${resultCountry.data[0].continents[0]}</span>
+    </div>
+</div>
+ <div class="wrapper">
+    <div class="data-wrapper">
+        <h4>Population:</h4>
+        <span>${resultCountry.data[0].population}</span>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="data-wrapper">
+        <h4>Currency:</h4>
+        <span>${
+          resultCountry.data[0].currencies[Object.keys(resultCountry.data[0].currencies)].name
+        } - ${Object.keys(resultCountry.data[0].currencies)[0]}</span>
+    </div>
+</div>
+ <div class="wrapper">
+    <div class="data-wrapper">
+        <h4>Common Languages:</h4>
+        <span>${Object.values(resultCountry.data[0].languages)
+          .toString()
+          .split(",")
+          .join(", ")}</span>
+    </div>
+</div>
+<div class="wrapper">
+  <div class="data-wrapper">
+      <h4>Weather (&#x2103 C):</h4>
+      <span>${resultWeather.data.main.temp}</span>
+  </div>
+</div>
+<div class="wrapper">
+<div class="data-wrapper">
+    <h4>Wiki Links:</h4>
+    <br>
+    <span><a href="${resultWiki.data.geonames[0].wikipediaUrl}">${resultWiki.data.geonames[0].wikipediaUrl}</a></span>
+    <span><a href="${resultWiki.data.geonames[1].wikipediaUrl}">${resultWiki.data.geonames[1].wikipediaUrl}</a></span>
+    <span><a href="${resultWiki.data.geonames[2].wikipediaUrl}">${resultWiki.data.geonames[2].wikipediaUrl}</a></span>
+
+</div>
+</div>
+
+`;
+
+applyCountryBorder(map, inputLow);
+        }
+      }})
+    })}
+
+ else {
   console.log("Geolocation is not supported by this browser.");
 }
 
-*/
+
+
+
 // borders
 
 
@@ -86,12 +195,12 @@ function applyCountryBorder(map, countryname) {
   };
 
 //button
-
 $('#search-btn').click( async function()  {
-  let inputLow = $('#countryInput').val().toLowerCase().split(' ').join('%20');
-  let resultCountry;
-  let resultWiki;
-  let resultWeather;
+
+let inputLow = $('#countryInput').val().toLowerCase().split(' ').join('%20');
+let resultCountry;
+let resultWiki;
+let resultWeather;
 
 
     if ($('#countryInput').val().length == 0) {
@@ -108,7 +217,7 @@ $('#search-btn').click( async function()  {
       type: 'POST',
       dataType: 'json',
       data: {
-          countryName: $('#countryInput').val()
+          countryName: /*$('#countryInput').val()*/ inputLow
       },
   });
 
@@ -122,7 +231,7 @@ $('#search-btn').click( async function()  {
     type: 'POST',
     dataType: 'json',
     data: {
-        countryName: $('#countryInput').val()
+        countryName: /*$('#countryInput').val()*/ inputLow
     },
 });
 
@@ -186,7 +295,7 @@ try {
     </div>
     <div class="wrapper">
       <div class="data-wrapper">
-          <h4>Weather (°C):</h4>
+          <h4>Weather (&#x2103 C):</h4>
           <span>${resultWeather.data.main.temp}</span>
       </div>
     </div>
