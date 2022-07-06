@@ -88,7 +88,7 @@ function applyCountryBorder(map, countryname) {
 //button
 
 $('#search-btn').click( async function()  {
-  let inputLow = $('#countryInput').val().toLowerCase();
+  let inputLow = $('#countryInput').val().toLowerCase().split(' ').join('%20');
   let resultCountry;
   let resultWiki;
   let resultWeather;
