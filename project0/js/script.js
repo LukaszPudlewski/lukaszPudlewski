@@ -91,6 +91,63 @@ if (navigator.geolocation) {
                 },
             });
         }
+
+        info.innerHTML = `
+        <img src="${resultCountry.data[0].flags.svg}" class="flag-img">
+        <h2>${resultCountry.data[0].name.common}</h2>
+        <div class="wrapper">
+            <div class="data-wrapper">
+                <h4>Capital:</h4>
+                <span>${resultCountry.data[0].capital[0]}</span>
+            </div>
+        </div>
+        <div class="wrapper">
+            <div class="data-wrapper">
+                <h4>Continent:</h4>
+                <span>${resultCountry.data[0].continents[0]}</span>
+            </div>
+        </div>
+         <div class="wrapper">
+            <div class="data-wrapper">
+                <h4>Population:</h4>
+                <span>${resultCountry.data[0].population}</span>
+            </div>
+        </div>
+        <div class="wrapper">
+            <div class="data-wrapper">
+                <h4>Currency:</h4>
+                <span>${
+                  resultCountry.data[0].currencies[Object.keys(resultCountry.data[0].currencies)].name
+                } - ${Object.keys(resultCountry.data[0].currencies)[0]}</span>
+            </div>
+        </div>
+         <div class="wrapper">
+            <div class="data-wrapper">
+                <h4>Common Languages:</h4>
+                <span>${Object.values(resultCountry.data[0].languages)
+                  .toString()
+                  .split(",")
+                  .join(", ")}</span>
+            </div>
+        </div>
+        <div class="wrapper">
+          <div class="data-wrapper">
+              <h4>Weather (&#x2103 C):</h4>
+              <span>${resultWeather.data.main.temp}</span>
+          </div>
+        </div>
+        <div class="wrapper">
+        <div class="data-wrapper">
+            <h4>Wiki Links:</h4>
+            <br>
+            <span><a href="${resultWiki.data.geonames[0].wikipediaUrl}">${resultWiki.data.geonames[0].wikipediaUrl}</a></span>
+            <span><a href="${resultWiki.data.geonames[1].wikipediaUrl}">${resultWiki.data.geonames[1].wikipediaUrl}</a></span>
+            <span><a href="${resultWiki.data.geonames[2].wikipediaUrl}">${resultWiki.data.geonames[2].wikipediaUrl}</a></span>
+    
+        </div>
+      </div>
+    
+      `;
  
 
 
@@ -227,7 +284,7 @@ try {
     </div>
     <div class="wrapper">
       <div class="data-wrapper">
-          <h4>Weather (&#x2103 C):</h4>
+          <h4>Weather (&#x2103):</h4>
           <span>${resultWeather.data.main.temp}</span>
       </div>
     </div>
