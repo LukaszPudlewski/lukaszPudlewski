@@ -93,7 +93,7 @@ if (navigator.geolocation) {
                     apiKey: /*process.env.API_KEY*/ '527a25be90efba24541cd7ca1ac87e7e'
                 },
             });
-        
+
 
         info.innerHTML = `
         <img src="${resultCountry.data[0].flags.svg}" class="flag-img">
@@ -135,7 +135,7 @@ if (navigator.geolocation) {
         </div>
         <div class="wrapper">
           <div class="data-wrapper">
-              <h4>Weather (&#x2103 C):</h4>
+              <h4>Weather (&#x2103):</h4>
               <span>${resultWeather.data.main.temp}</span>
           </div>
         </div>
@@ -303,6 +303,9 @@ try {
   </div>
 
   `;
+
+  if(borderLayer){
+    layerGroup.removeLayer(borderLayer);}
 
   applyCountryBorder(map, inputLow);
             }
