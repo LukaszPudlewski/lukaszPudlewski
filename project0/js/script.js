@@ -42,9 +42,7 @@ if (navigator.geolocation) {
             lng: lng,
             lat: lat
         },
-        success: function(result) {
-            
-            async function xx()  {
+        success: async function(result) {
 
 let inputLow = result.data.countryName.toLowerCase().split(' ').join('%20');
 let resultCountry;
@@ -153,7 +151,7 @@ info.innerHTML = `
 `;
 
 applyCountryBorder(map, inputLow);
-        }
+        
       }})
     })}
 
