@@ -239,7 +239,7 @@ try {
   data: {
       lat: resultCountry.data[0].latlng[0],
       lon: resultCountry.data[0].latlng[1],
-      apiKey: /*process.env.API_KEY*/ '527a25be90efba24541cd7ca1ac87e7e'
+      //apiKey: /*process.env.API_KEY*/ '527a25be90efba24541cd7ca1ac87e7e'
   },
 });
 
