@@ -70,41 +70,9 @@ if (!navigator.geolocation) {
 } else {
     navigator.geolocation.getCurrentPosition(success, error, geoOptions);
 
-    $.ajax({
-        //Pulls the list of borders, loops and filters through the JSON to find the same country with a matching ISO Code
-        url: './libs/php/getSpecificCountry.php',
-        type: 'get',
-        dataType: 'json',
-        data: {
-            iso: isoCode
-        },
 
-        success: function(response) {
-            if (currentFeature) {
-                currentFeature.clearLayers();
-            }
-
-            //currentFeature.clearLayers();
-            currentFeature = L.geoJSON(response.data, {
-                style: function(feature) {
-                    return {
-                        color: "#45bbff",
-                        opacity: 1,
-
-                    };
-                }
-            }).bindPopup(function(layer) {
-                return layer.feature.properties.description;
-            }).addTo(worldMap)
-            worldMap.fitBounds(currentFeature.getBounds())
-
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            //[Handle errors]
-            console.log(error, jqXHR, textStatus, errorThrown);
-        }
-    })
 };
+
 /* Configuration Options for GeoLocation */
 var geoOptions = {
     enableHighAccuracy: true,
