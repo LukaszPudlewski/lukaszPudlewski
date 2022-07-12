@@ -70,8 +70,8 @@ if (!navigator.geolocation) {
 } else {
     navigator.geolocation.getCurrentPosition(success, error, geoOptions);
 
-
 };
+
 
 /* Configuration Options for GeoLocation */
 var geoOptions = {
