@@ -1,0 +1,19 @@
+body,
+#mapid {
+
+    height: 93vh;
+    z-index: 0;
+    overflow: hidden;
+    bottom: 0;
+}
+
+#dropdownList {
+    position: float;
+    min-height: 4vh;
+    overflow: scroll;
+    overflow-x: hidden;
+    z-index: 5;
+}
+nav {
+    min-height: 5vh;
+}

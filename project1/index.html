@@ -1,0 +1,268 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <title>The Gazetteer</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="The Gazetteer">
+    <meta name="referrer" content="origin">
+    <meta name="keywords" content="Gazetteer">
+    <link rel="shortcut icon" type="image/jpg" href="https://img.icons8.com/office/16/000000/globe-earth.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="libs/cdn/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="libs/css/styles.css">
+    <link rel="stylesheet" href="libs/cdn/leaflet/leaflet.css">
+    <link rel="stylesheet" href="libs/cdn/easybuttons/easy-button.css">
+    <link rel="stylesheet" href="libs/cdn/markercluster/MarkerCluster.css">
+    <link rel="stylesheet" href="libs/cdn/extramarkers/leaflet.extra-markers.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://kit.fontawesome.com/a5edfd8557.js" crossorigin="anonymous"></script>
+
+
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <select id="dropdownList" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+            <option id="defaultOption" selected>Choose a country</option>
+        </select>
+      </nav>
+    <!-- Modal PC -->
+  
+
+    <div class="modal" id="ModalCenter2" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" id="modalWindow">
+                <div class="modal-header">
+                    <h5 class="modal-title justify-content-center" id="ModalLongTitle">Country Details</h5>
+                    <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table align-middle table-hover">
+
+                            <thead>
+
+                                <tr class="table-primary">
+
+                                    <th colspan="4">General Details</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                <tr>
+
+                                    <th scope="row" colspan="2"><i class="bi bi-person"></i> Population</th>
+                                    <td id="populationModal" colspan="2" class="align-left">1</td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <th scope="row" colspan="2"><i class="bi bi-translate"></i>Languages</th>
+
+                                    <td id="languageModal" colspan="1" class="align-right"></td>
+
+                                </tr>
+                                <tr>
+
+                                    <th scope="row" colspan="2"><i class="bi bi-cash-coin"></i> Currency</th>
+
+                                    <td id="currencyNameModal" class="align-center" colspan="1"></td>
+
+                                </tr>
+
+                                
+                                <tr>
+
+                                    <th scope="row" colspan="2"><i class="bi bi-border-all"></i> Area Size</th>
+
+                                    <td id="areaModal" colspan="1" class="align-left"></td>
+                                </tr>
+
+
+                            </tbody>
+                            
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="ModalCenter3" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" id="modalWindow">
+                <div class="modal-header">
+                    <h5 class="modal-title justify-content-center" id="ModalLongTitle">Country Details</h5>
+                    <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table align-middle table-hover">
+
+
+                            <tbody>
+
+                                <tr class=" table-secondary">
+
+                                    <th  colspan="3">Capital Details</th>
+
+                                </tr>
+
+                            
+
+                                <tr>
+
+                                    <th scope="row" colspan="2"><i class="bi bi-building"></i> Capital city</th>
+
+                                    <td id="capitalModal" colspan="1" class="align-left"></td>
+                                </tr>
+
+                                
+
+
+
+
+                                <tr>
+
+                                    <th scope="row" colspan="2"><i class="bi bi-geo-alt"></i> Geographical Location</th>
+
+                                    <td id="coordinatesModal" colspan="1"></td>
+
+                                </tr>
+
+
+                            
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <div class="modal" id="ModalCenter4" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" id="modalWindow">
+                <div class="modal-header">
+                    <h5 class="modal-title justify-content-center" id="ModalLongTitle">Country Details</h5>
+                    <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table align-middle table-hover">
+
+                           
+                            <tbody>
+                                
+                                <tr>
+                                    <th id="weatherIcon" scope="row" colspan="1"></th>
+                                    
+                                    <td  colspan="2"><h4 id="weatherDescription">Unknown</h4></td>
+
+                                </tr>
+                                
+                                <tr>
+
+                                    <td  class="align-right" colspan="1" ><i class="bi bi-thermometer-half "></i>Current Temperature</td>
+                                    <td id="temperatureModal" colspan="2" class="align-left"></td>
+
+
+                                </tr>
+
+                                <tr>
+
+                                    <td id="humidityModal" class="border" colspan="1"></td>
+                                    <td id="pressureModal" class="border" colspan="1"></td>
+                                    <td id="windModal" class="border" colspan="1"></td>
+
+                                </tr>
+                            </tbody>
+                           
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="ModalCenter5" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" id="modalWindow">
+                <div class="modal-header">
+                    <h5 class="modal-title justify-content-center" id="ModalLongTitle">Country Details</h5>
+                    <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table align-middle table-hover">
+
+                           
+                            <tbody>
+                                
+
+                                <tr class="table-success">
+
+                                    <th colspan="4" id="forecast">Upcoming Weather</th>
+
+                                </tr>
+                                <tr>
+                                    <th id = "currentDay" colspan="1" scope="row" class="align-middle"></th>
+                                    <td id = "currentWeatherIcon" colspan="1" class="align-middle"></td>
+                                    <td id = "currentTemperature" colspan="1" class="align-middle"></td>
+
+                                </tr>
+                                <tr>
+                                    <th id = "tomorrow" scope="row" colspan="1"  class="align-middle"></th>
+                                    <td id = "tomorrowWeatherIcon" colspan="1" class="align-middle"></td>
+                                    <td id = "tomorrowsTemperature" colspan="1" class="align-middle"></td>
+
+                                </tr>
+                                <tr>
+                                    <th id = "nextDay" scope="row" colspan="1" class="align-middle"></th>
+                                    <td id = "nextDayWeatherIcon" colspan="1" class="align-middle"></td>
+                                    <td id = "nextDayTemperature" colspan="1" class="align-middle"></td>
+                                </tr>
+
+
+                            
+
+                        </tbody>
+                           
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="mapid"></div>
+
+    <script src="libs/cdn/leaflet/leaflet.js "></script>
+    <script src="libs/cdn/jquery/jquery-3.6.0.js "></script>
+    <script src="libs/cdn/easybuttons/easy-button.js"></script>
+    <script src="libs/cdn/extramarkers/leaflet.extra-markers.min.js"></script>
+    <script src="libs/cdn/markercluster/leaflet.markercluster.js"></script>
+    <script src="libs/cdn/bootstrap/js/bootstrap.min.js "></script>
+    <script src="libs/js/main.js "></script>
+</body>
+
+</html>
