@@ -317,9 +317,10 @@ function callMapData(cityName) {
         }
     });
 }
+
+
 function generatePoints(latitude, longitude) {
-
-
+    
     $.ajax({
         url: './libs/php/getAttractions.php',
         type: 'get',
@@ -364,9 +365,9 @@ $('#dropdownList').change(function() {
     }
 })
 
-$('#closeModal').click(function() {
+/*$('#closeModal').click(function() {
     $('#ModalCenter').modal('hide');
-})
+})*/
 
 
 $(document).ready(function() {
@@ -466,3 +467,5 @@ $(document).ready(function() {
         $('#ModalCenter5').modal('show');
     }, 'Return to your current location').addTo(worldMap);
 });
+
+
