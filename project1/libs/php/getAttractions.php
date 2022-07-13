@@ -13,7 +13,7 @@ $lng = $_REQUEST['lng'];
 
 
 
-$url = 'https://api.opentripmap.com/0.1/en/places/radius?radius=100000&lon='. $lng . '&lat='. $lat . '&kinds=museums&format=json&apikey='.$opentripmap_key;
+$url = 'https://api.opentripmap.com/0.1/en/places/radius?radius=1000000&lon='. $lng . '&lat='. $lat . '&kinds=museums&format=json&apikey='.$opentripmap_key;
 
 
 

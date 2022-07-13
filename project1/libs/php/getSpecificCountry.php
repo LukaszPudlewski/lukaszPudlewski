@@ -7,8 +7,8 @@
 $executionStartTime = microtime(true);
 
 
-
-$url='https://localhost/project1-main/libs/js/countryBorders.json';
+/*
+$url='https://localhost/project1/libs/js/countryBorders.json';
 
 $iso = $_REQUEST['iso'];
 
@@ -31,7 +31,12 @@ $result=curl_exec($ch);
 
 
 curl_close($ch);
+*/
+$countryBorders = file_get_contents('./libs/data/countryBorders.json', true);
 
+$iso = $_REQUEST['iso'];
+
+$decode = json_decode($countryBorders,true);
 
 
 $decode = json_decode($result,true);

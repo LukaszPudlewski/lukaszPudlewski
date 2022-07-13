@@ -2,8 +2,8 @@
 <?php
 
 $executionStartTime = microtime(true);
-
-$url='https://localhost/project1-main/libs/js/countryBorders.json';
+/*
+$url='https://localhost/project1/libs/js/countryBorders.json';
 
 //
 $ch = curl_init();
@@ -14,8 +14,12 @@ curl_setopt($ch, CURLOPT_URL,$url);
 $result=curl_exec($ch);
 
 curl_close($ch);
+*/
 
-$decode = json_decode($result,true);
+$countryBorders = file_get_contents('./libs/data/countryBorders.json', true);
+
+$decode = json_decode($countryBorders,true);
+
 if(isset($decode)){
     $output['status']['code'] = "200";
     $output['status']['name'] = "ok";
