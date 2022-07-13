@@ -16,7 +16,7 @@ $result=curl_exec($ch);
 curl_close($ch);
 */
 
-$countryBorders = file_get_contents('./libs/data/countryBorders.json', true);
+$countryBorders = file_get_contents('../data/countryBorders.json', true);
 
 $decode = json_decode($countryBorders,true);
 
