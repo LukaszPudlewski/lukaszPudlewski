@@ -7,6 +7,7 @@ countryObject = {
     longitude: "Unknown Longitude",
     population: 0,
     area : 0,
+    continentName: "Unknown continent",
     currencyName: "Unknown currency name",
     currencyCode: "Unknown Currency Code",
     currencyValue: 1,
@@ -28,35 +29,48 @@ var countryCode = "";
 
 //Marker related variables
 var capital;
-var countryMarkers = L.markerClusterGroup({
-	iconCreateFunction: function(cluster) {
-		return L.divIcon({ html: '<b>' + cluster.getChildCount() + '</b>' });
-	},
-});
-var userPin = L.ExtraMarkers.icon({
-    icon: 'fa-home',
-    markerColor: 'green',
-    shape: 'square',
-    prefix: 'fa'
+var citiesMarkers = L.markerClusterGroup({
+    spiderfyOnMaxZoom: false,
+    showCoverageOnHover: false,
+    zoomToBoundsOnClick: true,
+    removeOutsideVisibleBounds: true,
+    maxClusterRadius: 50,
+      iconCreateFunction: function (cluster) {
+      var childCount = cluster.getChildCount();
+      var c = ' marker-cluster-';
+      if (childCount < 10) {
+        c += 'small';
+      }
+      else if (childCount < 100) {
+        c += 'medium';
+      }
+      else {
+        c += 'large';
+      }
+  
+      return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>',
+       className: 'cities marker-cluster' + c, iconSize: new L.Point(40, 40) });
+    }
   });
-  var capitalMarker = L.ExtraMarkers.icon({
-    icon: 'fa-building',
-    markerColor: 'black',
-    shape: 'star',
-    prefix: 'fa'
+  
+
+  var citiesMarker = L.ExtraMarkers.icon({
+    icon: 'fa-city',
+    extraClasses: 'fa-2x',
+    markerColor: 'violet',
+    shape: 'circle',
+    prefix: 'fas',
+    shadowSize: [0, 0]
   });
-  var attractionMarker = L.ExtraMarkers.icon({
-    icon: 'fa-map-signs',
-    markerColor: 'black',
-    shape: 'triangle',
-    prefix: 'fa', 
-  });
-var monumentMarker = L.ExtraMarkers.icon({
-        icon: 'fa-archway',
-        markerColor: 'yellow',
-        shape: 'circle',
-        prefix: 'fa', 
-  });
+  var userMarker = L.ExtraMarkers.icon({
+      icon: 'fa-home',
+      extraClasses: 'fa-2x',
+      markerColor: 'green',
+      shape: 'circle',
+      prefix: 'fas',
+      shadowSize: [0, 0]
+    });
+ 
   var cityLat, cityLng, capitalCityMarker;
 
 //Instantiates the World Map
@@ -64,13 +78,16 @@ var worldMap;
 //Globally declares current or initial geoJSON feature collection
 var currentFeature;
 
-//Requests location and updates the country Object
+
+
+  //Requests location and updates the country Object
 if (!navigator.geolocation) {
     console.log('Geolocation is not supported by your browser');
 } else {
     navigator.geolocation.getCurrentPosition(success, error, geoOptions);
-
 };
+
+
 
 
 /* Configuration Options for GeoLocation */
@@ -83,7 +100,10 @@ var geoOptions = {
 function success(pos) {
     countryObject.latitude, user.latitude = pos.coords.latitude;
     countryObject.longitude, user.longitude = pos.coords.longitude;
-}
+        getIsoFromCoords(pos.coords.latitude, pos.coords.longitude);
+        $("#selCountry").val(countryCode);
+    }
+
 
 function error(ex) {
     try {
@@ -147,7 +167,7 @@ function handleCountryJSON() {
 
 //Loads data from restCountries, countryborders and WeatherMaps APIs
 function loadCountryDataFromISO(isoCode) {
-    countryMarkers.clearLayers();
+    citiesMarkers.clearLayers();
     $.ajax({
         url: './libs/php/getCountryData.php',
         type: "get",
@@ -157,6 +177,8 @@ function loadCountryDataFromISO(isoCode) {
         },
         success: function(response) {
             console.log(response.data.geonames[0]);
+
+            
             
             if(response.data.geonames[0].countryName != undefined){
                 countryObject.countryName = response.data.geonames[0].countryName;
@@ -173,7 +195,6 @@ function loadCountryDataFromISO(isoCode) {
                 countryObject.longitude = response.data.latlng[1];
             }
             if(response.data.geonames[0].currencyCode != undefined){
-                //countryObject.currencyName = response.data.currencies[0].name;
                 countryObject.currencyCode = response.data.geonames[0].currencyCode;
                 $('#currencyNameModal').html(countryObject.currencyCode)
             }
@@ -294,6 +315,8 @@ function callWeather(wLatitude, wLongitude) {
     })
 }
 
+
+
 function callMapData(cityName) {
 
         var cityLat, cityLng;
@@ -309,7 +332,6 @@ function callMapData(cityName) {
             cityLat = response.data.latitude;
             cityLng = response.data.longitude;
             callWeather(cityLat, cityLng);
-            generatePoints(cityLat, cityLng);
         },
         error: function(jqXHR, textStatus, errorThrown) {
             //[Handle errors]
@@ -318,38 +340,28 @@ function callMapData(cityName) {
     });
 }
 
+function callWiki(countryName) {
 
-function generatePoints(latitude, longitude) {
-    
+
     $.ajax({
-        url: './libs/php/getAttractions.php',
+        url: './libs/php/wikiLinks.php.php',
         type: 'get',
         dataType: 'json',
         data: {
-            lat: latitude,
-            lng: longitude,
+            countryName: countryName
         },
+    success: function(response) {
+        console.log(response)
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        //[Handle errors]
+        console.log(error, jqXHR, textStatus, errorThrown);
+    }
+});
+}
 
-        success: function(response) {
-            for(i=0;i<response.data.length; i++) {
-                if(~response.data[i].name.indexOf("Museum")) {
-                    countryMarkers.addLayer((L.marker([response.data[i].point.lat,response.data[i].point.lon], {icon: monumentMarker}).bindPopup(
-                        response.data[i].name + "<br> ("+response.data[i].point.lat+ ","+response.data[i].point.lon+")")));
-                } else {
-                    countryMarkers.addLayer((L.marker([response.data[i].point.lat,response.data[i].point.lon], {icon: attractionMarker}).bindPopup(
-                        response.data[i].name + "<br> ("+response.data[i].point.lat+ ","+response.data[i].point.lon+")")));
-                }
 
-            }
-            countryMarkers.addLayer(L.marker([latitude,longitude], {icon:capitalMarker}).bindPopup(countryObject.capitalName));
-            },
-        error: function(jqXHR, textStatus, errorThrown) {
-            //[Handle errors]
-            console.log(error, jqXHR, textStatus, errorThrown);
-        }
-    });
-    worldMap.addLayer(countryMarkers);
-    };
+
 
 //Trigger when a country is selected
 // Needs to be reconfigured to work for options
@@ -371,6 +383,8 @@ $('#dropdownList').change(function() {
 
 
 $(document).ready(function() {
+
+
     //Updates the country list to choose from the countries.json
     handleCountryJSON();
     //Acquire data on
@@ -444,28 +458,28 @@ $(document).ready(function() {
         tileSize: 512,
         zoomOffset: -1
     }).addTo(worldMap);
-    L.marker([user.latitude, user.longitude], {icon: userPin}).bindPopup("Current location").addTo(worldMap);
+    L.marker([user.latitude, user.longitude], {icon: userMarker}).bindPopup("Current location").addTo(worldMap);
 
-
-    L.easyButton('bi bi-geo-fill', function() {
+//ikony font awesome do zmiany
+    L.easyButton('fas fa-location-arrow fa-1x', function() {
         getIsoFromCoords(user.latitude, user.longitude);
     }, 'Return to your current location').addTo(worldMap);
 
-    L.easyButton('bi bi-info-circle', function() {
+    L.easyButton('fas fa-location-arrow fa-1x', function() {
         $('#ModalCenter2').modal('show');
-    }, 'Return to your current location').addTo(worldMap);
+    }, 'Country').addTo(worldMap);
 
-    L.easyButton('bi bi-person-circle', function() {
+    L.easyButton('fas fa-location-arrow fa-1x', function() {
         $('#ModalCenter3').modal('show');
-    }, 'Return to your current location').addTo(worldMap);
+    }, 'Capitol').addTo(worldMap);
 
-    L.easyButton('bi bi-cloud', function() {
+    L.easyButton('fas fa-location-arrow fa-1x', function() {
         $('#ModalCenter4').modal('show');
-    }, 'Return to your current location').addTo(worldMap);
+    }, 'Current Weather').addTo(worldMap);
 
-    L.easyButton('bi bi-rss', function() {
+    L.easyButton('fas fa-location-arrow fa-1x', function() {
         $('#ModalCenter5').modal('show');
-    }, 'Return to your current location').addTo(worldMap);
+    }, 'Weather Forcast').addTo(worldMap);
 });
 
 

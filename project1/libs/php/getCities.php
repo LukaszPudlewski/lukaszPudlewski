@@ -5,7 +5,7 @@ $executionStartTime = microtime(true);
 
 $countryCode = $_REQUEST['countryISO'];
 
-$url = 'https://api.tomtom.com/search/2/poiSearch/airport.json?limit=99&countrySet='.$countryCode.' &view=Unified&relatedPois=off&key='.$tomtom_key;
+$url = 'https://www.triposo.com/api/20220104/location.json?countrycode=' .$countryCode. '&tag_labels=city&count=100&fields=coordinates,snippet,name,score&account=pudel1923&token='.$triposo_key;
 
 
 
